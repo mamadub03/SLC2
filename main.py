@@ -6,6 +6,7 @@ addresses = []
 
 LISTENER_PORT = 4444
 
+# cli interface helper to send commands once the connection is established
 def handler(connection, address):
     index = clients.index(connection)
     while True:
@@ -25,7 +26,10 @@ def handler(connection, address):
 def accept_connections():
 
     server = socket.socket()
+    
+    # allow socket reuse to avoid errors everytime program reboots again
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    
     server.bind(("0.0.0.0" , LISTENER_PORT))
     server.listen()
     print(f"Listening on Port {LISTENER_PORT}")
@@ -38,16 +42,17 @@ def accept_connections():
 
         print(f"Connections found at this address {a}")
 
+# multithreading to listen to ongoing connections while other parts are running
 threading.Thread(target=accept_connections,daemon=True).start()
 
 
 print("Welcome to the C2, type help to get started")
 while True:
     # help, sessions, interact, quit 
-
+    # CLI session
     command = input("C2> ")
 
-
+    
     if command.startswith("sessions"):
         for i, addy in enumerate(addresses):
             print(i , addy)
