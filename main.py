@@ -13,7 +13,7 @@ def handler(connection, address):
         try:
             command = input(f"Session {index} > ")
             if command.lower() == "exit":
-                connection.send("exit")
+                connection.send("exit".encode())
                 connection.close()
                 break
             connection.send(command.encode())
@@ -68,7 +68,7 @@ while True:
     elif command.startswith("exit"):
         break
     else:
-        "Did not understand, please input again"
+        print("Did not understand, please input again")
 
 
 # [['interact'],[1]]
