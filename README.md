@@ -17,6 +17,6 @@ It’s split into two main parts:
   - `interact [id]` → interact with a specific client session
   - `exit` → close the session or quit the server
 
-## ⚠Disclaimer
+## Disclaimer
 This code is **for educational use only which was developed for a larger project**. 
 Do **not** use it on any system without permission.
